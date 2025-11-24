@@ -1,0 +1,111 @@
+<?php
+session_start();
+if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
+  header("Location: ../login.html");
+  exit();
+}
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - Mahsa Hostel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Admin Dashboard</h1>
+  </header>
+  <h2>Search Student by ID</h2>
+<input type="text" id="search-id" placeholder="Enter Student ID">
+<button onclick="searchStudent()">Search</button>
+
+<div id="student-result"></div>
+
+<script>
+function searchStudent() {
+  const id = document.getElementById('search-id').value;
+  fetch(`php/search_student.php?student_id=${id}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.error) {
+        document.getElementById('student-result').innerHTML = `<p>${data.error}</p>`;
+      } else {
+        const s = data.student;
+        const p = data.pass;
+        let passInfo = p ? `
+          <p><strong>Pass Status:</strong> ${p.status}</p>
+          ${p.status === 'pending' ? `<button onclick="releasePass(${p.id})">Release Pass</button>` : ''}
+        ` : `<p>No pass found.</p>`;
+
+        document.getElementById('student-result').innerHTML = `
+          <h3>${s.name} (${s.id})</h3>
+          <p><strong>Room:</strong> ${s.room}</p>
+          <p><strong>Email:</strong> ${s.email}</p>
+          <p><strong>Phone:</strong> ${s.phone}</p>
+          <p><strong>Nationality:</strong> ${s.nationality}</p>
+          ${s.nationality === 'international' ? `<p><strong>Country:</strong> ${s.country}</p>` : ''}
+          ${passInfo}
+        `;
+      }
+    });
+}
+</script>
+
+
+  <section id="student-management">
+    <h2>Manage Student Information</h2>
+    <form>
+      <input type="text" placeholder="Student Name">
+      <input type="text" placeholder="Student ID">
+      <input type="text" placeholder="Phone Number">
+      <input type="text" placeholder="Room Number">
+      <input type="email" placeholder="Student Email">
+      <input type="text" placeholder="Nationality">
+      <input type="text" placeholder="Country">
+      <input type="text" placeholder="Name">
+<input type="text" placeholder="Emergency Contact Number">
+      <button type="submit">Add / Update Student</button>
+      <button type="button">Delete Student</button>
+    </form>
+  </section>
+
+  <section id="maintenance-requests">
+    <h2>Maintenance Requests</h2>
+    <div class="request">
+      <p><strong>Student ID:</strong> 123456</p>
+      <p><strong>Issue:</strong> Broken fan in room</p>
+      <textarea placeholder="Reply to student..."></textarea>
+      <button type="submit">Send Reply</button>
+    </div>
+    <!-- Repeat for other requests -->
+  </section>
+
+  <section id="feedback">
+    <h2>Student Feedback</h2>
+    <div class="feedback">
+      <p><strong>Student ID:</strong> 123456</p>
+      <p><strong>Feedback:</strong> Hostel is clean and safe</p>
+      <textarea placeholder="Reply to feedback..."></textarea>
+      <button type="submit">Send Reply</button>
+    </div>
+    <!-- Repeat for other feedback -->
+  </section>
+
+  <div class="dashboard-summary">
+  <div>Total Students: 120</div>
+  <div>Pending Passes: 5</div>
+  <div>Open Maintenance: 3</div>
+</div>
+
+
+<a href="php/logout.php" class="btn">Logout</a>
+
+  <footer>
+    <p>&copy; 2025 Mahsa Hostel Portal</p>
+  </footer>
+</body>
+</html>

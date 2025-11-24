@@ -1,0 +1,92 @@
+<?php
+session_start();
+if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'student') {
+  header("Location: ../login.html");
+  exit();
+}
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Portal - Mahsa Hostel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Welcome, Student</h1>
+  </header>
+
+  <form action="php/upload_photo.php" method="POST" enctype="multipart/form-data">
+  <input type="file" name="photo" accept="image/*" required>
+  <button type="submit">Upload Photo</button>
+</form>
+
+
+  <section id="student-info">
+    <h2>Your Information</h2>
+    <p><strong>Name:</strong> Shahira Nanni</p>
+    <p><strong>Student ID:</strong> 123456</p>
+    <p><strong>Room:</strong> B-203</p>
+    <p><strong>Email:</strong> shahira@example.com</p>
+    <p><strong>Nationality:</strong> Local</p>
+    <p><strong>Country: </strong> Malaysia</p>
+    <p><strong>Emergency Contact Name:</strong> Mama Nanni</p>
+    <p><strong>Emergency Contact Number:</strong> 012-3456789 </p>
+  </section>
+
+  <section id="maintenance">
+    <h2>Report Maintenance Issue</h2>
+    <form>
+      <textarea placeholder="Describe the issue..."></textarea>
+      <button type="submit">Submit Issue</button>
+    </form>
+  </section>
+
+  <section id="feedback">
+    <h2>Give Feedback</h2>
+    <form>
+      <textarea placeholder="Your feedback about the hostel..."></textarea>
+      <button type="submit">Submit Feedback</button>
+    </form>
+  </section>
+
+  <section id="hostel-pass">
+    <h2>Hostel Pass</h2>
+    <form>
+      <label>Reason for leaving:</label>
+      <input type="text" placeholder="e.g. Family visit">
+      <label>Date Out:</label>
+      <input type="date">
+      <label>Time Out:</label>
+      <input type="time">
+      <label>Date Back:</label>
+      <input type="date">
+      <button type="submit">Create Pass</button>
+    </form>
+
+    <div class="pass-status green">
+      <h3>Status
+
+        <div id="pass-status"></div>
+
+<script>
+fetch('php/get_pass.php?student_id=123456')
+  .then(res => res.json())
+  .then(data => {
+    let color = data.status === 'cekin' ? 'green' :
+                data.status === 'cekout' ? 'blue' : 'orange';
+    document.getElementById('pass-status').innerHTML = `
+      <div class="pass-status ${color}">
+        <h3>Status: ${data.status.toUpperCase()}</h3>
+        <p><strong>Date:</strong> ${data.date_out}</p>
+        <p><strong>Time:</strong> ${data.time_out}</p>
+        <p><strong>Reason:</strong> ${data.reason}</p>
+      </div>
+    `;
+  });
+</script>
+<a href="php/logout.php" class="btn">Logout</a>

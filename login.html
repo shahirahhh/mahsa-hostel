@@ -1,0 +1,43 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Mahsa Hostel Portal</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+  <header>
+    <h1>Login to Mahsa Hostel Portal</h1>
+  </header>
+
+  <section id="login-form">
+    <form action="php/login.php" method="POST">
+      <label for="id">Student/Admin ID:</label>
+      <input type="text" name="id" required>
+
+      <label for="password">Password:</label>
+      <input type="password" name="password" required>
+
+      <label for="role">Login as:</label>
+      <select name="role">
+        <option value="student">Student</option>
+        <option value="admin">Admin</option>
+      </select>
+
+      <button type="submit">Login</button>
+      <p><a href="forgot_password.html">Forgot Password?</a></p>
+    </form>
+  </section>
+<section id="Back">
+    <h2>Homepage</h2>
+    <a href="index.html" class="btn">Back to Homepage</a>
+  </section>
+  <footer>
+    <p>&copy; 2025 Mahsa Hostel Portal</p>
+  </footer>
+</body>
+</html>
