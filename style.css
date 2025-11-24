@@ -171,3 +171,16 @@ form button {
     left: 0;
   }
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
